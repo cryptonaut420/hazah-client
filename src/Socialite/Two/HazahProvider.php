@@ -1,13 +1,13 @@
 <?php
 
-namespace Tokenly\TokenpassClient\Socialite\Two;
+namespace Tokenly\HazahClient\Socialite\Two;
 
 use Exception;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
 use Laravel\Socialite\Two\User;
 
-class TokenpassProvider extends AbstractProvider implements ProviderInterface
+class HazahProvider extends AbstractProvider implements ProviderInterface
 {
     /**
      * The scopes being requested.
@@ -16,7 +16,7 @@ class TokenpassProvider extends AbstractProvider implements ProviderInterface
      */
     protected $scopes = ['user', 'tca'];
 
-    protected $base_url = 'https://tokenpass.tokenly.com';
+    protected $base_url = 'https://hazah.tokenly.com';
 
     public function setBaseURL($base_url) {
         $this->base_url = $base_url;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\TokenpassClient;
+namespace Tokenly\HazahClient;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -9,28 +9,28 @@ use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
 use Tokenly\LaravelEventLog\Facade\EventLog;
-use Tokenly\TokenpassClient\Contracts\TokenpassUserRespositoryContract;
-use Tokenly\TokenpassClient\Events\TokenpassUserCreatedEvent;
-use Tokenly\TokenpassClient\Exception\TokenpassAuthorizationException;
-use Tokenly\TokenpassClient\TokenpassAPI;
+use Tokenly\HazahClient\Contracts\HazahUserRespositoryContract;
+use Tokenly\HazahClient\Events\HazahUserCreatedEvent;
+use Tokenly\HazahClient\Exception\HazahAuthorizationException;
+use Tokenly\HazahClient\HazahAPI;
 
 /**
- * Tokenpass authorization handler
+ * Hazah authorization handler
  */
-class TokenpassAuthorizer
+class HazahAuthorizer
 {
 
-    public function __construct(TokenpassAPI $tokenpass_api, TokenpassUserRespositoryContract $user_repository)
+    public function __construct(HazahAPI $hazah_api, HazahUserRespositoryContract $user_repository)
     {
-        $this->tokenpass_api = $tokenpass_api;
+        $this->hazah_api = $hazah_api;
         $this->user_repository = $user_repository;
     }
 
     /**
-     * Obtain the user information from Tokenpass.
+     * Obtain the user information from Hazah.
      *
-     * This is the route called after Tokenpass has granted (or denied) permission to this application
-     * This application is now responsible for loading the user information from Tokenpass and storing
+     * This is the route called after Hazah has granted (or denied) permission to this application
+     * This application is now responsible for loading the user information from Hazah and storing
      * it in the local user database.
      *
      * @return Response
@@ -39,14 +39,14 @@ class TokenpassAuthorizer
     {
 
         try {
-            // check for an error returned from Tokenpass
+            // check for an error returned from Hazah
             list($error_code, $error_description) = $this->extractErrorFromRequest($request);
             if ($error_description !== null) {
-                EventLog::logError('tokenpass.authFailed', ['errorCode' => $error_code, 'errorMessage' => $error_description]);
-                throw new TokenpassAuthorizationException($error_description, 1);
+                EventLog::logError('hazah.authFailed', ['errorCode' => $error_code, 'errorMessage' => $error_description]);
+                throw new HazahAuthorizationException($error_description, 1);
             }
 
-            // retrieve the user from Tokenpass
+            // retrieve the user from Hazah
             $oauth_user = Socialite::user();
 
             // get all the properties from the oAuth user object
@@ -88,7 +88,7 @@ class TokenpassAuthorizer
                 ]);
 
                 // fire event
-                event(new TokenpassUserCreatedEvent($new_user));
+                event(new HazahUserCreatedEvent($new_user));
 
                 // login
                 Auth::login($new_user);
@@ -99,7 +99,7 @@ class TokenpassAuthorizer
             // done
             return $logged_in_user;
 
-        } catch (TokenpassAuthorizationException $e) {
+        } catch (HazahAuthorizationException $e) {
             throw $e;
         } catch (InvalidStateException $e) {
             throw $e;
@@ -108,7 +108,7 @@ class TokenpassAuthorizer
 
             // some unexpected error happened
             EventLog::logError('authorization.failed', $e);
-            throw new TokenpassAuthorizationException("Failed to authenticate this user", 1);
+            throw new HazahAuthorizationException("Failed to authenticate this user", 1);
         }
     }
     public function syncExistingUser($user)
@@ -152,7 +152,7 @@ class TokenpassAuthorizer
                 EventLog::debug('user.sync.success', ['username' => $user['username']]);
 
                 // fire event
-                event(new TokenpassUserSyncedEvent($new_user));
+                event(new HazahUserSyncedEvent($new_user));
             } else {
                 // not able to sync this user
                 EventLog::debug('user.sync.faled', ['username' => $user['username']]);

@@ -1,20 +1,20 @@
 {
-    "name": "tokenly/tokenpass-client",
-    "description": "A Laravel package for applications that wish to use Tokenly Tokenpass for user authentication.",
-    "keywords": ["laravel","tokenly","tokenpass","accounts","oauth"],
+    "name": "cryptonaut420/hazah-client",
+    "description": "A Laravel package for applications that wish to use HazaH for user authentication.",
+    "keywords": ["laravel","tokenly","hazah","accounts","oauth"],
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Devon Weller",
-            "email": "devon@tokenly.com",
-            "homepage": "http://tokenly.com"
+            "name": "Nick Rathman",
+            "email": "nick@tokenly.com",
+            "homepage": "https://tokenly.com"
         }
     ],
     "require": {
         "php": ">=7.0.0",
         "laravel/socialite": "^4",
-		    "guzzlehttp/guzzle": "~6.0",        
+		    "guzzlehttp/guzzle": "~6.0",
         "tokenly/api-client": "dev-master",
         "tokenly/laravel-event-log": "dev-master"
     },
@@ -22,12 +22,12 @@
         "phpunit/phpunit": "~7"
     },
     "autoload": {
-        "psr-4": {"Tokenly\\TokenpassClient\\": "src/"}
+        "psr-4": {"Tokenly\\HazahClient\\": "src/"}
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Tokenly\\TokenpassClient\\Provider\\TokenpassServiceProvider"
+                "Tokenly\\HazahClient\\Provider\\HazahServiceProvider"
             ]
         }
     }

@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-use Tokenly\TokenpassClient\TokenpassAPI;
+use Tokenly\HazahClient\HazahAPI;
 
 /*
 
 # Usage:
 
-export TOKENPASS_PROVIDER_HOST=https://tokenpass-stage.tokenly.com
+export TOKENPASS_PROVIDER_HOST=https://hazah-stage.tokenly.com
 export TOKENPASS_CLIENT_ID=xxxxx
 export TOKENPASS_CLIENT_SECRET=xxxxx
 
@@ -37,7 +37,7 @@ if ($step == 2) {
     $code = $argv[2];
     if (!$code) { throw new Exception("Code is required", 1); }
 
-    $api = new TokenpassAPI();
+    $api = new HazahAPI();
     $access_token = $api->getOAuthAccessToken($code);
 
     echo "\$access_token:\n$access_token\n";

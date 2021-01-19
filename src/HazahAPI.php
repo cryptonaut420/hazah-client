@@ -1,12 +1,12 @@
 <?php
-namespace Tokenly\TokenpassClient;
+namespace Tokenly\HazahClient;
 
 use Exception;
 use Requests;
 use GuzzleHttp\Client as HttpClient;
-use Tokenly\TokenpassClient\Exception\TokenpassAPIException;
+use Tokenly\HazahClient\Exception\HazahAPIException;
 
-class TokenpassAPI
+class HazahAPI
 {
     public $redirect_uri  = false;
     public static $errors = array();
@@ -15,12 +15,12 @@ class TokenpassAPI
     protected $oauth_client_id = null;
     protected $oauth_client_secret = null;
 
-    function __construct($client_id, $client_secret, $privileged_client_id, $privileged_client_secret, $tokenpass_url, $redirect_uri, $oauth_client_id=null, $oauth_client_secret=null) {
+    function __construct($client_id, $client_secret, $privileged_client_id, $privileged_client_secret, $hazah_url, $redirect_uri, $oauth_client_id=null, $oauth_client_secret=null) {
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
         $this->privileged_client_id = $privileged_client_id;
         $this->privileged_client_secret = $privileged_client_secret;
-        $this->tokenpass_url = $tokenpass_url;
+        $this->hazah_url = $hazah_url;
         $this->redirect_uri = $redirect_uri;
         $this->oauth_client_id = $oauth_client_id;
         $this->oauth_client_secret = $oauth_client_secret;
@@ -42,9 +42,9 @@ class TokenpassAPI
     {
         try{
             $params = $this->normalizeGetParameters($rules);
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/check/'.$username, $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/check/'.$username, $params, $oauth_token);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -65,9 +65,9 @@ class TokenpassAPI
     {
         try{
             $params = $this->normalizeGetParameters($rules);
-            $call = $this->fetchFromTokenpassAPIWithPrivilegedAuth('GET', 'tca/checkemail/'.$email, $params);
+            $call = $this->fetchFromHazahAPIWithPrivilegedAuth('GET', 'tca/checkemail/'.$email, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -82,9 +82,9 @@ class TokenpassAPI
         try{
             $get_parameters = [];
             if ($refresh) { $get_parameters['refresh'] = '1'; }
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/addresses/'.$username, $get_parameters);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/addresses/'.$username, $get_parameters);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -99,9 +99,9 @@ class TokenpassAPI
         try{
             $params = [];
             if ($refresh) { $params['refresh'] = '1'; }
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/addresses', $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/addresses', $params, $oauth_token);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -124,9 +124,9 @@ class TokenpassAPI
     {
         $body = $rules;
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/check-address/'.$address, $body);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/check-address/'.$address, $body);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -144,9 +144,9 @@ class TokenpassAPI
         $params['token'] = $token;
         $params['current_password'] = $password;
         try{
-            $call = $this->fetchFromTokenpassAPI('PATCH', 'update', $params);
+            $call = $this->fetchFromHazahAPI('PATCH', 'update', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             throw new \Exception($e->getMessage());
         }
         if(!isset($call['result'])){
@@ -167,9 +167,9 @@ class TokenpassAPI
         $params['password'] = $password;
         $params['email'] = $email;
         try{
-            $result = $this->fetchFromTokenpassAPI('POST', 'register', $params);
+            $result = $this->fetchFromHazahAPI('POST', 'register', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             throw new \Exception($e->getMessage());
         }
         if(isset($result['error']) AND trim($result['error']) != ''){
@@ -186,9 +186,9 @@ class TokenpassAPI
         $params['password']  = $password;
 
         try{
-            $result = $this->fetchFromTokenpassAPI('POST', 'login', $params);
+            $result = $this->fetchFromHazahAPI('POST', 'login', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             throw new \Exception($e->getMessage());
         }
         if (isset($result['error']) AND trim($result['error']) != ''){
@@ -215,7 +215,7 @@ class TokenpassAPI
         try {
             $result = $this->fetchFromOAuth('POST', '/oauth/token', $form_data);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             throw new \Exception($e->getMessage());
         }
         if (isset($result['error']) AND trim($result['error']) != ''){
@@ -242,7 +242,7 @@ class TokenpassAPI
         try{
             $result = $this->fetchFromOAuth('POST', 'oauth/access-token', $form_data);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             throw new \Exception($e->getMessage());
         }
         if (isset($result['error']) AND trim($result['error']) != ''){
@@ -259,7 +259,7 @@ class TokenpassAPI
         try{
             $result = $this->fetchFromOAuth('GET', 'oauth/user', $form_data);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             throw new \Exception($e->getMessage());
         }
         if (isset($result['error']) AND trim($result['error']) != ''){
@@ -276,9 +276,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/addresses/'.$username.'/'.$address, $params);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/addresses/'.$username.'/'.$address, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -292,9 +292,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/address/'.$address, $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/address/'.$address, $params, $oauth_token);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -320,7 +320,7 @@ class TokenpassAPI
             $params['public'] = $public;
             $params['active'] = $active;
             $params['type'] = $type;
-            $call = $this->fetchFromTokenpassAPI('POST', 'tca/address', $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('POST', 'tca/address', $params, $oauth_token);
         }
         catch(Exception $e){
             self::$errors[] = $e->getMessage();
@@ -342,7 +342,7 @@ class TokenpassAPI
         try{
             $params = [];
             $params['signature'] = $signature;
-            $call = $this->fetchFromTokenpassAPI('POST', 'tca/address/'.$address, $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('POST', 'tca/address/'.$address, $params, $oauth_token);
         }
         catch(Exception $e){
             self::$errors[] = $e->getMessage();
@@ -372,7 +372,7 @@ class TokenpassAPI
             if($active !== null){
                 $params['active'] = $active;
             }
-            $call = $this->fetchFromTokenpassAPI('PATCH', 'tca/address/'.$address, $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('PATCH', 'tca/address/'.$address, $params, $oauth_token);
         }
         catch(Exception $e){
             self::$errors[] = $e->getMessage();
@@ -393,7 +393,7 @@ class TokenpassAPI
         }
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('DELETE', 'tca/address/'.$address, $params, $oauth_token);
+            $call = $this->fetchFromHazahAPI('DELETE', 'tca/address/'.$address, $params, $oauth_token);
         }
         catch(Exception $e){
             self::$errors[] = $e->getMessage();
@@ -415,9 +415,9 @@ class TokenpassAPI
             $address = 'null';
         }
         try{
-            $call = $this->fetchFromTokenpassAPI($method, 'lookup/address/'.$address, $params);
+            $call = $this->fetchFromHazahAPI($method, 'lookup/address/'.$address, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -431,9 +431,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'lookup/user/'.$username, $params);
+            $call = $this->fetchFromHazahAPI('GET', 'lookup/user/'.$username, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -463,9 +463,9 @@ class TokenpassAPI
                     $params[$f] = $extra_opts[$f];
                 }
             }
-            $call = $this->fetchFromTokenpassAPI('POST', 'tca/provisional/register', $params);
+            $call = $this->fetchFromHazahAPI('POST', 'tca/provisional/register', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             throw new Exception($e->getMessage());
         }
@@ -499,9 +499,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/provisional', $params);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/provisional', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -514,9 +514,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/provisional', $params);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/provisional', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -536,9 +536,9 @@ class TokenpassAPI
     public function deleteProvisionalSource($address)
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('DELETE', 'tca/provisional/'.$address);
+            $call = $this->fetchFromHazahAPI('DELETE', 'tca/provisional/'.$address);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -565,9 +565,9 @@ class TokenpassAPI
                 $params['fingerprint'] = $fingerprint;
             }
             $params['ref'] = $ref;
-            $call = $this->fetchFromTokenpassAPI('POST', 'tca/provisional/tx', $params);
+            $call = $this->fetchFromHazahAPI('POST', 'tca/provisional/tx', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -580,9 +580,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/provisional/tx/'.$id, $params);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/provisional/tx/'.$id, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -598,9 +598,9 @@ class TokenpassAPI
             if ($destination !== null) {
                 $params['destination'] = $destination;
             }
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/provisional/tx', $params);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/provisional/tx', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -613,9 +613,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('GET', 'tca/provisional/byemail/'.$email, $params);
+            $call = $this->fetchFromHazahAPI('GET', 'tca/provisional/byemail/'.$email, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -628,9 +628,9 @@ class TokenpassAPI
     {
         try{
             $params = [];
-            $call = $this->fetchFromTokenpassAPI('DELETE', 'tca/provisional/tx/'.$id, $params);
+            $call = $this->fetchFromHazahAPI('DELETE', 'tca/provisional/tx/'.$id, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -664,9 +664,9 @@ class TokenpassAPI
             if(isset($data['destination'])){
                 $params['destination'] = $data['destination'];
             }
-            $call = $this->fetchFromTokenpassAPI('PATCH', 'tca/provisional/tx/'.$id, $params);
+            $call = $this->fetchFromHazahAPI('PATCH', 'tca/provisional/tx/'.$id, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -680,8 +680,8 @@ class TokenpassAPI
         try {
             $params = [];
             if ($refresh) { $params['refresh'] = '1'; }
-            $response = $this->fetchFromTokenpassAPI('GET', 'tca/public/balances', $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('GET', 'tca/public/balances', $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -692,8 +692,8 @@ class TokenpassAPI
         try {
             $params = [];
             if ($refresh) { $params['refresh'] = '1'; }
-            $response = $this->fetchFromTokenpassAPI('GET', 'tca/protected/balances', $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('GET', 'tca/protected/balances', $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -703,8 +703,8 @@ class TokenpassAPI
     {
         try {
             $params = [];
-            $response = $this->fetchFromTokenpassAPI('GET', 'tca/messenger/chats', $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('GET', 'tca/messenger/chats', $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -715,8 +715,8 @@ class TokenpassAPI
     {
         try {
             $params = [];
-            $response = $this->fetchFromTokenpassAPI('POST', 'tca/messenger/roster/'.$chat_id, $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('POST', 'tca/messenger/roster/'.$chat_id, $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -728,8 +728,8 @@ class TokenpassAPI
     {
         try {
             $params = [];
-            $response = $this->fetchFromTokenpassAPI('GET', '/chat/'.$chat_uuid, $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('GET', '/chat/'.$chat_uuid, $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -745,8 +745,8 @@ class TokenpassAPI
     {
         try {
             $params = [];
-            $response = $this->fetchFromTokenpassAPI('POST', '/chats', $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('POST', '/chats', $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -763,8 +763,8 @@ class TokenpassAPI
     {
         try {
             $params = array_merge($update_vars, []);
-            $response = $this->fetchFromTokenpassAPI('POST', '/chat/'.$chat_uuid, $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('POST', '/chat/'.$chat_uuid, $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -774,8 +774,8 @@ class TokenpassAPI
     {
         try {
             $params = [];
-            $response = $this->fetchFromTokenpassAPI('GET', 'tca/messenger/chat/'.$chat_id, $params, $oauth_token);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('GET', 'tca/messenger/chat/'.$chat_id, $params, $oauth_token);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -791,10 +791,10 @@ class TokenpassAPI
             if ($strict) {
                 $params['strict'] = '1';
             }
-            $response = $this->fetchFromTokenpassAPIWithPrivilegedAuth('GET', 'lookup/user/exists/'.$username, $params);
+            $response = $this->fetchFromHazahAPIWithPrivilegedAuth('GET', 'lookup/user/exists/'.$username, $params);
         } catch (Exception $e) {
             throw $e;
-        } catch (TokenpassAPIException $e) {
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -818,8 +818,8 @@ class TokenpassAPI
             elseif(is_array($app_whitelist)){
                 $params['app_whitelist'] = join("\n", $app_whitelist);
             }
-            $response = $this->fetchFromTokenpassAPI('POST', 'credits', $params);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('POST', 'credits', $params);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -844,8 +844,8 @@ class TokenpassAPI
                     $params['app_whitelist'] = join("\n", $data['app_whitelist']);
                 }
             }
-            $response = $this->fetchFromTokenpassAPI('PATCH', 'credits/'.$id, $params);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('PATCH', 'credits/'.$id, $params);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -858,9 +858,9 @@ class TokenpassAPI
     public function listAppCreditGroups()
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'credits');
+            $call = $this->fetchFromHazahAPI('GET', 'credits');
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -873,9 +873,9 @@ class TokenpassAPI
     public function getAppCreditGroup($groupId)
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'credits/'.$groupId);
+            $call = $this->fetchFromHazahAPI('GET', 'credits/'.$groupId);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -890,8 +890,8 @@ class TokenpassAPI
         try {
             $params = array();
             $params['name'] = $name;
-            $response = $this->fetchFromTokenpassAPI('POST', 'credits/'.$groupId.'/accounts', $params);
-        } catch (TokenpassAPIException $e) {
+            $response = $this->fetchFromHazahAPI('POST', 'credits/'.$groupId.'/accounts', $params);
+        } catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -904,9 +904,9 @@ class TokenpassAPI
     public function listAppCreditAccounts($groupId)
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'credits/'.$groupId.'/accounts');
+            $call = $this->fetchFromHazahAPI('GET', 'credits/'.$groupId.'/accounts');
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -919,9 +919,9 @@ class TokenpassAPI
     public function getAppCreditAccount($groupId, $accountId)
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'credits/'.$groupId.'/accounts/'.$accountId);
+            $call = $this->fetchFromHazahAPI('GET', 'credits/'.$groupId.'/accounts/'.$accountId);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -968,9 +968,9 @@ class TokenpassAPI
         try{
             $params = array();
             $params['accounts'] = $accounts_amounts;
-            $call = $this->fetchFromTokenpassAPI('POST', 'credits/'.$groupId.'/accounts/credit', $params);
+            $call = $this->fetchFromHazahAPI('POST', 'credits/'.$groupId.'/accounts/credit', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -986,9 +986,9 @@ class TokenpassAPI
         try{
             $params = array();
             $params['accounts'] = $accounts_amounts;
-            $call = $this->fetchFromTokenpassAPI('POST', 'credits/'.$groupId.'/accounts/debit', $params);
+            $call = $this->fetchFromHazahAPI('POST', 'credits/'.$groupId.'/accounts/debit', $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -1013,9 +1013,9 @@ class TokenpassAPI
     public function getAppCreditGroupHistory($groupId)
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'credits/'.$groupId.'/history');
+            $call = $this->fetchFromHazahAPI('GET', 'credits/'.$groupId.'/history');
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -1025,9 +1025,9 @@ class TokenpassAPI
     public function getAppCreditAccountHistory($groupId, $account)
     {
         try{
-            $call = $this->fetchFromTokenpassAPI('GET', 'credits/'.$groupId.'/accounts/'.$account.'/history');
+            $call = $this->fetchFromHazahAPI('GET', 'credits/'.$groupId.'/accounts/'.$account.'/history');
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -1037,9 +1037,9 @@ class TokenpassAPI
     /** END App Credit API Methods **/
     public function getTokenPerks($token) {
         try {
-            $result = $this->fetchFromPublicTokenpassAPI('GET', 'perks/'.$token);
+            $result = $this->fetchFromPublicHazahAPI('GET', 'perks/'.$token);
         }
-        catch (TokenpassAPIException $e) {
+        catch (HazahAPIException $e) {
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -1049,9 +1049,9 @@ class TokenpassAPI
     {
         try{
             $params = ['client_id' => $this->client_id];
-            $call = $this->fetchFromTokenpassAPI('GET', 'lookup/email/'.$email, $params);
+            $call = $this->fetchFromHazahAPI('GET', 'lookup/email/'.$email, $params);
         }
-        catch(TokenpassAPIException $e){
+        catch(HazahAPIException $e){
             self::$errors[] = $e->getMessage();
             return false;
         }
@@ -1071,10 +1071,10 @@ class TokenpassAPI
         return $out;
     }
     // ------------------------------------------------------------------------
-    protected function fetchFromPublicTokenpassAPI($method, $path, $parameters=[]) {
-        return $this->fetchFromTokenpassAPI($method, $path, $parameters, null, ['public' => true]);
+    protected function fetchFromPublicHazahAPI($method, $path, $parameters=[]) {
+        return $this->fetchFromHazahAPI($method, $path, $parameters, null, ['public' => true]);
     }
-    protected function fetchFromTokenpassAPI($method, $path, $parameters=[], $oauth_token=null, $options=[]) {
+    protected function fetchFromHazahAPI($method, $path, $parameters=[], $oauth_token=null, $options=[]) {
         /*
         // use a Bearer token
         if ($oauth_token !== null AND strlen($oauth_token)) {
@@ -1084,21 +1084,21 @@ class TokenpassAPI
         */
         $parameters['oauth_token'] = $oauth_token;
         $url = '/api/v1/'.ltrim($path, '/');
-        return $this->fetchFromTokenpass($method, $url, $parameters, 'json', $options);
+        return $this->fetchFromHazah($method, $url, $parameters, 'json', $options);
     }
     protected function fetchFromOAuth($method, $path, $parameters=[]) {
         $url = '/'.ltrim($path, '/');
-        return $this->fetchFromTokenpass($method, $url, $parameters, 'form');
+        return $this->fetchFromHazah($method, $url, $parameters, 'form');
     }
-    protected function fetchFromTokenpass($method, $url, $parameters=[], $post_type='json', $options=[]) {
+    protected function fetchFromHazah($method, $url, $parameters=[], $post_type='json', $options=[]) {
         $options['post_type'] = $post_type;
         try {
             return $this->call($method, $url, $parameters, $options);
         } catch (Exception $e) {
-            throw new TokenpassAPIException($e->getMessage(), $e->getCode(), $e);
+            throw new HazahAPIException($e->getMessage(), $e->getCode(), $e);
         }
     }
-    protected function fetchFromTokenpassAPIWithPrivilegedAuth($method, $path, $parameters=[]) {
+    protected function fetchFromHazahAPIWithPrivilegedAuth($method, $path, $parameters=[]) {
         try {
             // save the client id and secret
             $old_client_id       = $this->client_id;
@@ -1106,7 +1106,7 @@ class TokenpassAPI
             // use the privileged client id and secret
             $this->client_id     = $this->privileged_client_id;
             $this->client_secret = $this->privileged_client_secret;
-            $result = $this->fetchFromTokenpassAPI($method, $path, $parameters);
+            $result = $this->fetchFromHazahAPI($method, $path, $parameters);
         } finally {
             // restore the client id and secret
             //   even if an exception was thrown
@@ -1136,7 +1136,7 @@ class TokenpassAPI
 
       //send the request
       try{
-        $response = $client->request($method, $this->tokenpass_url.'/'.ltrim($endpoint, '/'), $data);
+        $response = $client->request($method, $this->hazah_url.'/'.ltrim($endpoint, '/'), $data);
         if($response->getStatusCode() != 200){
           throw new Exception('Invalid API endpoint status code');
         }

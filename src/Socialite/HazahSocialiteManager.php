@@ -1,10 +1,10 @@
 <?php
 
-namespace Tokenly\TokenpassClient\Socialite;
+namespace Tokenly\HazahClient\Socialite;
 
 use Laravel\Socialite\SocialiteManager;
 
-class TokenpassSocialiteManager extends SocialiteManager
+class HazahSocialiteManager extends SocialiteManager
 {
 
     /**
@@ -12,12 +12,12 @@ class TokenpassSocialiteManager extends SocialiteManager
      *
      * @return \Laravel\Socialite\Two\AbstractProvider
      */
-    protected function createTokenpassDriver()
+    protected function createHazahDriver()
     {
-        $config = $this->app['config']['tokenpass'];
+        $config = $this->app['config']['hazah'];
 
         return $this->buildProvider(
-            'Tokenly\TokenpassClient\Socialite\Two\TokenpassProvider', $config
+            'Tokenly\HazahClient\Socialite\Two\HazahProvider', $config
         );
     }
 
@@ -38,8 +38,8 @@ class TokenpassSocialiteManager extends SocialiteManager
           $config['client_secret'], $config['redirect_uri']
       );
 
-      if(isset($config['tokenpass_url'])){
-        $provider->setBaseURL($config['tokenpass_url']);
+      if(isset($config['hazah_url'])){
+        $provider->setBaseURL($config['hazah_url']);
       }
 
       return $provider;
@@ -54,7 +54,7 @@ class TokenpassSocialiteManager extends SocialiteManager
      */
     public function getDefaultDriver()
     {
-        return 'tokenpass';
+        return 'hazah';
     }
 
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddTokenpassFieldsToUsersTable extends Migration
+class AddHazahFieldsToUsersTable extends Migration
 {
     /**
      * Run the migrations.

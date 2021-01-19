@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\TokenpassClient\Http\Controllers;
+namespace Tokenly\HazahClient\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-use Tokenly\TokenpassClient\Exception\TokenpassAuthorizationException;
-use Tokenly\TokenpassClient\TokenpassAuthorizer;
+use Tokenly\HazahClient\Exception\HazahAuthorizationException;
+use Tokenly\HazahClient\HazahAuthorizer;
 
-class TokenpassAuthController extends Controller
+class HazahAuthController extends Controller
 {
 
     public function home()
@@ -41,9 +41,9 @@ class TokenpassAuthController extends Controller
         try {
             // handle callback here
             $user = Auth::user();
-            $tokenpass_authorizer->syncExistingUser($user);
+            $hazah_authorizer->syncExistingUser($user);
             return view('auth/sync', $this->sharedViewData());
-        } catch (TokenpassAuthorizationException $e) {
+        } catch (HazahAuthorizationException $e) {
             return view('auth/error', ['errorMessage' => $e->getMessage()] + $this->sharedViewData());
         }
     }
@@ -51,28 +51,28 @@ class TokenpassAuthController extends Controller
     public function redirectToProvider()
     {
         // set scopes
-        Socialite::scopes(explode(',', config('tokenpass.scopes')));
+        Socialite::scopes(explode(',', config('hazah.scopes')));
 
         // and redirect
         return Socialite::redirect();
     }
 
-    public function handleProviderCallback(Request $request, TokenpassAuthorizer $tokenpass_authorizer)
+    public function handleProviderCallback(Request $request, HazahAuthorizer $hazah_authorizer)
     {
         try {
             // handle callback here
-            $logged_in_user = $tokenpass_authorizer->handleProviderCallback($request);
+            $logged_in_user = $hazah_authorizer->handleProviderCallback($request);
 
         } catch (InvalidStateException $e) {
             Log::debug("InvalidStateException caught");
             return redirect(route('login'))->withErrors('Could not authenticate at this time.  Please try again.');
 
-        } catch (TokenpassAuthorizationException $e) {
+        } catch (HazahAuthorizationException $e) {
             return view('auth/error', ['errorMessage' => $e->getMessage()] + $this->sharedViewData());
         }
 
         // logged in successfully
-        return redirect()->intended(route('tokenpass.home'));
+        return redirect()->intended(route('hazah.home'));
     }
 
     protected function sharedViewData()

@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-use Tokenly\TokenpassClient\TokenpassAPI;
+use Tokenly\HazahClient\HazahAPI;
 
 /*
 
 # Usage:
 
-export TOKENPASS_PROVIDER_HOST=https://tokenpass-stage.tokenly.com
+export TOKENPASS_PROVIDER_HOST=https://hazah-stage.tokenly.com
 export TOKENPASS_CLIENT_ID=xxxxx
 export TOKENPASS_CLIENT_SECRET=xxxxx
 
@@ -17,7 +17,7 @@ lookup-addresses-list.php <username> <refresh>
 
 require __DIR__.'/init/bootstrap.php';
 
-$api = new TokenpassAPI();
+$api = new HazahAPI();
 
 $username = $argv[1];
 if (!$username) { throw new Exception("username is required", 1); }

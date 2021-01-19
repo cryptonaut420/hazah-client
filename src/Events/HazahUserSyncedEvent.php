@@ -1,10 +1,10 @@
 <?php
 
-namespace Tokenly\TokenpassClient\Events;
+namespace Tokenly\HazahClient\Events;
 
 use App\Models\User;
 
-class TokenpassUserCreatedEvent
+class HazahUserSyncedEvent
 {
 
     public $user;

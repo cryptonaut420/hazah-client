@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-use Tokenly\TokenpassClient\TokenpassAPI;
+use Tokenly\HazahClient\HazahAPI;
 
 /*
 
 # Usage:
 
-export TOKENPASS_PROVIDER_HOST=https://tokenpass-stage.tokenly.com
+export TOKENPASS_PROVIDER_HOST=https://hazah-stage.tokenly.com
 export TOKENPASS_CLIENT_ID=xxxxx
 export TOKENPASS_CLIENT_SECRET=xxxxx
 
@@ -17,7 +17,7 @@ export TOKENPASS_CLIENT_SECRET=xxxxx
 
 require __DIR__.'/init/bootstrap.php';
 
-$api = new TokenpassAPI();
+$api = new HazahAPI();
 
 $oauth_token = $argv[1];
 if (!$oauth_token) { throw new Exception("oauth_token is required", 1); }

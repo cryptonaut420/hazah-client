@@ -1,10 +1,10 @@
 <?php
 
-namespace Tokenly\TokenpassClient\Console;
+namespace Tokenly\HazahClient\Console;
 
 use Illuminate\Console\Command;
 
-class MakeTokenpassAuthCommand extends Command
+class MakeHazahAuthCommand extends Command
 {
 
     /**
@@ -12,7 +12,7 @@ class MakeTokenpassAuthCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'tokenpass:make-auth
+    protected $signature = 'hazah:make-auth
         {--force : Overwrite existing views by default}';
 
     /**
@@ -20,7 +20,7 @@ class MakeTokenpassAuthCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Scaffold Tokenpass authentication views';
+    protected $description = 'Scaffold Hazah authentication views';
 
     /**
      * The views that need to be exported.
@@ -52,9 +52,9 @@ class MakeTokenpassAuthCommand extends Command
 
         $this->exportViews();
 
-        $this->info('Tokenpass authentication views scaffolding generated successfully.');
+        $this->info('Hazah authentication views scaffolding generated successfully.');
 
-        app('Tokenly\TokenpassClient\TokenpassAPI');
+        app('Tokenly\HazahClient\HazahAPI');
     }
 
     /**

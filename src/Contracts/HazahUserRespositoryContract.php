@@ -6,11 +6,11 @@
  * @author Marco Pivetta <ocramius@gmail.com>
  */
 
-namespace Tokenly\TokenpassClient\Contracts;
+namespace Tokenly\HazahClient\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface TokenpassUserRespositoryContract
+interface HazahUserRespositoryContract
 {
 
     public function create($attributes);

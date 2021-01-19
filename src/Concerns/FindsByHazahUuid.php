@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Tokenly\TokenpassClient\Concerns;
+namespace Tokenly\HazahClient\Concerns;
 
 /**
  * find by tokenly_uuid field
  */
-trait FindsByTokenpassUuid
+trait FindsByHazahUuid
 {
  
     public function findByTokenlyUuid($tokenly_uuid) {

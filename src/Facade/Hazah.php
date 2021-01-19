@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\TokenpassClient\Facade;
+namespace Tokenly\HazahClient\Facade;
 
 use Exception;
 use Illuminate\Support\Facades\Facade;
@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Facade;
 /**
 * 
 */
-class Tokenpass extends Facade
+class Hazah extends Facade
 {
     
     protected static function getFacadeAccessor() { 
-        return '\Tokenly\TokenpassClient\Tokenpass';
+        return '\Tokenly\HazahClient\Hazah';
     }
 
 }
