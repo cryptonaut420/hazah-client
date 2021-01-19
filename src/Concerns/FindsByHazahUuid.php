@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tokenly\HazahClient\Concerns;
+namespace Cryptonaut420\HazahClient\Concerns;
 
 /**
  * find by tokenly_uuid field
@@ -9,7 +9,7 @@ namespace Tokenly\HazahClient\Concerns;
 trait FindsByHazahUuid
 {
  
-    public function findByTokenlyUuid($tokenly_uuid) {
+    public function findByCryptonaut420Uuid($tokenly_uuid) {
         return $this->prototype_model->where('tokenly_uuid', $tokenly_uuid)->first();
     }
 

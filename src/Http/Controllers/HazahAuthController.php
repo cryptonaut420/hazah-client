@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Http\Controllers;
+namespace Cryptonaut420\HazahClient\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-use Tokenly\HazahClient\Exception\HazahAuthorizationException;
-use Tokenly\HazahClient\HazahAuthorizer;
+use Cryptonaut420\HazahClient\Exception\HazahAuthorizationException;
+use Cryptonaut420\HazahClient\HazahAuthorizer;
 
 class HazahAuthController extends Controller
 {

@@ -1,10 +1,10 @@
 <?php
-namespace Tokenly\HazahClient;
+namespace Cryptonaut420\HazahClient;
 
 use Exception;
 use Requests;
 use GuzzleHttp\Client as HttpClient;
-use Tokenly\HazahClient\Exception\HazahAPIException;
+use Cryptonaut420\HazahClient\Exception\HazahAPIException;
 
 class HazahAPI
 {
@@ -485,7 +485,7 @@ class HazahAPI
 
 		/*
         $proof_message = $this->getProvisionalSourceProofMessage($address);
-        $xchain = app('Tokenly\XChainClient\Client');
+        $xchain = app('Cryptonaut420\XChainClient\Client');
         $proof = false;
         $proof = $xchain->signMessage($address, $proof_message);
         if(!$proof OR !isset($proof['result'])){

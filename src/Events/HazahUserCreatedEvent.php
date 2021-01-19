@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Events;
+namespace Cryptonaut420\HazahClient\Events;
 
 use App\Models\User;
 

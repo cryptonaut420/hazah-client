@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Console;
+namespace Cryptonaut420\HazahClient\Console;
 
 use Illuminate\Console\Command;
 
@@ -54,7 +54,7 @@ class MakeHazahAuthCommand extends Command
 
         $this->info('Hazah authentication views scaffolding generated successfully.');
 
-        app('Tokenly\HazahClient\HazahAPI');
+        app('Cryptonaut420\HazahClient\HazahAPI');
     }
 
     /**

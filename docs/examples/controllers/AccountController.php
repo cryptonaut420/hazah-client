@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use Tokenly\HazahClient\Facade\Hazah;
+use Cryptonaut420\HazahClient\Facade\Hazah;
 
 class AccountController extends Controller
 {

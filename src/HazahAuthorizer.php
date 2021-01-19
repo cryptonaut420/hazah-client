@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient;
+namespace Cryptonaut420\HazahClient;
 
 use Exception;
 use Illuminate\Http\Request;
@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-use Tokenly\LaravelEventLog\Facade\EventLog;
-use Tokenly\HazahClient\Contracts\HazahUserRespositoryContract;
-use Tokenly\HazahClient\Events\HazahUserCreatedEvent;
-use Tokenly\HazahClient\Exception\HazahAuthorizationException;
-use Tokenly\HazahClient\HazahAPI;
+use Cryptonaut420\LaravelEventLog\Facade\EventLog;
+use Cryptonaut420\HazahClient\Contracts\HazahUserRespositoryContract;
+use Cryptonaut420\HazahClient\Events\HazahUserCreatedEvent;
+use Cryptonaut420\HazahClient\Exception\HazahAuthorizationException;
+use Cryptonaut420\HazahClient\HazahAPI;
 
 /**
  * Hazah authorization handler
@@ -58,7 +58,7 @@ class HazahAuthorizer
             $confirmed_email = $oauth_user->user['email_is_confirmed'] ? $email : null;
 
             // find an existing user based on the credentials provided
-            $existing_user = $this->user_repository->findByTokenlyUuid($tokenly_uuid);
+            $existing_user = $this->user_repository->findByCryptonaut420Uuid($tokenly_uuid);
 
             $logged_in_user = null;
             if ($existing_user) {
@@ -129,7 +129,7 @@ class HazahAuthorizer
                 $email = $oauth_user->user['email'];
 
                 // find an existing user based on the credentials provided
-                $existing_user = $this->user_repository->findByTokenlyUuid($tokenly_uuid);
+                $existing_user = $this->user_repository->findByCryptonaut420Uuid($tokenly_uuid);
                 if ($existing_user and $existing_user->id != $user['id']) {
                     throw new Exception("User ID mismatch", 1);
                 }

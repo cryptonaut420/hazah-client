@@ -22,12 +22,12 @@
         "phpunit/phpunit": "~7"
     },
     "autoload": {
-        "psr-4": {"Tokenly\\HazahClient\\": "src/"}
+        "psr-4": {"Cryptonaut420\\HazahClient\\": "src/"}
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Tokenly\\HazahClient\\Provider\\HazahServiceProvider"
+                "Cryptonaut420\\HazahClient\\Provider\\HazahServiceProvider"
             ]
         }
     }

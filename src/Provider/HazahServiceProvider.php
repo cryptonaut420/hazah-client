@@ -1,12 +1,12 @@
 <?php
 
-namespace Tokenly\HazahClient\Provider;
+namespace Cryptonaut420\HazahClient\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Tokenly\HazahClient\Console\MakeHazahAuthCommand;
-use Tokenly\HazahClient\Contracts\HazahUserRespositoryContract;
-use Tokenly\HazahClient\Socialite\HazahSocialiteManager;
-use Tokenly\HazahClient\HazahAPI;
+use Cryptonaut420\HazahClient\Console\MakeHazahAuthCommand;
+use Cryptonaut420\HazahClient\Contracts\HazahUserRespositoryContract;
+use Cryptonaut420\HazahClient\Socialite\HazahSocialiteManager;
+use Cryptonaut420\HazahClient\HazahAPI;
 
 /**
  *

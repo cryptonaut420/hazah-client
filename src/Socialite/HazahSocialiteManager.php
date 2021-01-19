@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Socialite;
+namespace Cryptonaut420\HazahClient\Socialite;
 
 use Laravel\Socialite\SocialiteManager;
 
@@ -17,7 +17,7 @@ class HazahSocialiteManager extends SocialiteManager
         $config = $this->app['config']['hazah'];
 
         return $this->buildProvider(
-            'Tokenly\HazahClient\Socialite\Two\HazahProvider', $config
+            'Cryptonaut420\HazahClient\Socialite\Two\HazahProvider', $config
         );
     }
 

@@ -10,9 +10,9 @@
                 <div class="spacer1"></div>
 
                 @if ($synced)
-                    <p>Your account settings are now <strong>up to date</strong> with your Tokenly Account.</p>
+                    <p>Your account settings are now <strong>up to date</strong> with your Cryptonaut420 Account.</p>
 
-                    <p>To make changes to your account, please <a target="_blank" href="https://hazah.tokenly.com">edit your Tokenly Account</a> and then Sync your account again.</p>
+                    <p>To make changes to your account, please <a target="_blank" href="https://hazah.tokenly.com">edit your Cryptonaut420 Account</a> and then Sync your account again.</p>
 
                     <div class="spacer1"></div>
 

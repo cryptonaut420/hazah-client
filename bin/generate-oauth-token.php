@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use Tokenly\HazahClient\HazahAPI;
+use Cryptonaut420\HazahClient\HazahAPI;
 
 /*
 

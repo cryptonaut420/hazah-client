@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Exception;
+namespace Cryptonaut420\HazahClient\Exception;
 
 use Exception;
 

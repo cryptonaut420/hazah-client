@@ -6,7 +6,7 @@
  * @author Marco Pivetta <ocramius@gmail.com>
  */
 
-namespace Tokenly\HazahClient\Contracts;
+namespace Cryptonaut420\HazahClient\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +17,6 @@ interface HazahUserRespositoryContract
 
     public function update(Model $resource, $attributes);
 
-    public function findByTokenlyUuid($tokenly_uuid);
+    public function findByCryptonaut420Uuid($tokenly_uuid);
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Socialite\Two;
+namespace Cryptonaut420\HazahClient\Socialite\Two;
 
 use Exception;
 use Laravel\Socialite\Two\AbstractProvider;

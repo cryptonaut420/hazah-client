@@ -1,6 +1,6 @@
 <?php
 
-namespace Tokenly\HazahClient\Facade;
+namespace Cryptonaut420\HazahClient\Facade;
 
 use Exception;
 use Illuminate\Support\Facades\Facade;
@@ -12,7 +12,7 @@ class Hazah extends Facade
 {
     
     protected static function getFacadeAccessor() { 
-        return '\Tokenly\HazahClient\Hazah';
+        return '\Cryptonaut420\HazahClient\Hazah';
     }
 
 }
