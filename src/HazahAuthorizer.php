@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
-use Cryptonaut420\LaravelEventLog\Facade\EventLog;
+use Tokenly\LaravelEventLog\Facade\EventLog;
 use Cryptonaut420\HazahClient\Contracts\HazahUserRespositoryContract;
 use Cryptonaut420\HazahClient\Events\HazahUserCreatedEvent;
 use Cryptonaut420\HazahClient\Exception\HazahAuthorizationException;

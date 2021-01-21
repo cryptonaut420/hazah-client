@@ -17,6 +17,6 @@ interface HazahUserRespositoryContract
 
     public function update(Model $resource, $attributes);
 
-    public function findByCryptonaut420Uuid($tokenly_uuid);
+    public function findByHazahUuid($hazah_uuid);
 
 }

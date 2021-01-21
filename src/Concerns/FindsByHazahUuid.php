@@ -8,9 +8,9 @@ namespace Cryptonaut420\HazahClient\Concerns;
  */
 trait FindsByHazahUuid
 {
- 
-    public function findByCryptonaut420Uuid($tokenly_uuid) {
-        return $this->prototype_model->where('tokenly_uuid', $tokenly_uuid)->first();
+
+    public function findByHazahUuid($hazah_uuid) {
+        return $this->prototype_model->where('hazah_uuid', $hazah_uuid)->first();
     }
 
 

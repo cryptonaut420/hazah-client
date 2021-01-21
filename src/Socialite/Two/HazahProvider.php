@@ -16,12 +16,11 @@ class HazahProvider extends AbstractProvider implements ProviderInterface
      */
     protected $scopes = ['user', 'tca'];
 
-    protected $base_url = 'https://hazah.tokenly.com';
+    protected $base_url = 'https://app.hazah.io';
 
     public function setBaseURL($base_url) {
         $this->base_url = $base_url;
     }
-
 
     /**
      * {@inheritdoc}
