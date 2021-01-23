@@ -81,7 +81,7 @@ class Server extends BaseServer
     /**
      * {@inheritdoc}
      */
-    public function userUsername($data, TokenCredentials $tokenCredentials)
+    public function userScreenName($data, TokenCredentials $tokenCredentials)
     {
         return $data['username'];
     }
