@@ -2,7 +2,7 @@
 
 namespace Cryptonaut420\HazahClient\Socialite;
 
-use Laravel\Socialite\SocialiteManager;
+use \Laravel\Socialite\SocialiteManager;
 
 class HazahSocialiteManager extends SocialiteManager
 {
@@ -12,7 +12,7 @@ class HazahSocialiteManager extends SocialiteManager
      *
      * @return \Laravel\Socialite\Two\AbstractProvider
      */
-    protected function createHazahDriver()
+    public function createHazahDriver()
     {
         $config = $this->app['config']['hazah'];
 
