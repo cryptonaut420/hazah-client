@@ -13,6 +13,6 @@ class HazahExtendSocialite
      */
     public function handle(SocialiteWasCalled $socialiteWasCalled)
     {
-        $socialiteWasCalled->extendSocialite('hazah', Provider::class, Server::class);
+        $socialiteWasCalled->extendSocialite('hazah', Provider::class);
     }
 }
