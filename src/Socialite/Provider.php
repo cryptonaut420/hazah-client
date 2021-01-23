@@ -2,8 +2,8 @@
 
 namespace Cryptonaut420\HazahClient\Socialite;
 
-use SocialiteProviders\Manager\OAuth1\AbstractProvider;
-use SocialiteProviders\Manager\OAuth1\User;
+use SocialiteProviders\Manager\OAuth2\AbstractProvider;
+use SocialiteProviders\Manager\OAuth2\User;
 
 class Provider extends AbstractProvider
 {
@@ -12,13 +12,68 @@ class Provider extends AbstractProvider
      */
     public const IDENTIFIER = 'HAZAH';
 
-    protected function mapUserToObject(array $user)
-    {
-        return (new User())->setRaw($user['extra'])->map([
-            'id'       => $user['id'],
-            'name'     => $user['name'],
-            'username'     => $user['username'],            
-            'email'    => $user['email'],
-        ]);
-    }
+    /**
+       * {@inheritdoc}
+       */
+      protected $scopes = ['user', 'tca'];
+
+      /**
+       * {@inheritdoc}
+       */
+      protected function getAuthUrl($state)
+      {
+          return $this->buildAuthUrlFromBase(
+              env('HAZAH_PROVIDER_HOST').'/oauth/authorize',
+              $state
+          );
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      protected function getTokenUrl()
+      {
+          return env('HAZAH_PROVIDER_HOST').'/oauth/token';
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      protected function getUserByToken($token)
+      {
+          $response = $this->getHttpClient()->get(
+              env('HAZAH_PROVIDER_HOST').'/oauth-api/user-info',
+              [
+                  'query' => [
+                      'access_token' => $token,
+                  ],
+              ]
+          );
+
+          return json_decode($response->getBody()->getContents(), true);
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      protected function mapUserToObject(array $user)
+      {
+          $user = $user['data'];
+
+          return (new User())->setRaw($user)->map([
+              'id'       => $user['id'],
+              'email'    => $user['email'],
+              'username'    => $user['username']
+          ]);
+      }
+
+      /**
+       * {@inheritdoc}
+       */
+      protected function getTokenFields($code)
+      {
+          return array_merge(parent::getTokenFields($code), [
+              'grant_type' => 'authorization_code',
+          ]);
+      }
 }
