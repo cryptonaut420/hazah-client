@@ -42,7 +42,7 @@ class Provider extends AbstractProvider
       protected function getUserByToken($token)
       {
           $response = $this->getHttpClient()->get(
-              env('HAZAH_PROVIDER_HOST').'/oauth-api/user-info',
+              env('HAZAH_PROVIDER_HOST').'/oauth/user',
               [
                   'query' => [
                       'access_token' => $token,
@@ -58,10 +58,9 @@ class Provider extends AbstractProvider
        */
       protected function mapUserToObject(array $user)
       {
-          $user = $user['data'];
-
           return (new User())->setRaw($user)->map([
               'id'       => $user['id'],
+              'name'     => $user['name'],
               'email'    => $user['email'],
               'username'    => $user['username']
           ]);
